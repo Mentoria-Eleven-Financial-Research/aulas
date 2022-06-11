@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:todoapp/home/home_page.dart';
 
@@ -11,9 +13,43 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  double left1 = 0.0;
+  double top1 = 0.0;
+  double left2 = 0.0;
+  double top2 = 0.0;
+  double top3 = 0.0;
+
+  late final double x0;
+  late final double y0;
+
+  late final double x1;
+  late final double y1;
+
   @override
   void initState() {
     super.initState();
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
+      left1 = x0 = MediaQuery.of(context).size.width / 2 - 102;
+      left2 = x0;
+      top1 = y1 = MediaQuery.of(context).size.height / 2 - 138;
+      top2 = y0 = MediaQuery.of(context).size.height / 2 - 186;
+      top3 = MediaQuery.of(context).size.height / 2 - 162;
+
+      setState(() {});
+    });
+
+    Timer.periodic(const Duration(seconds: 2), (_) => changeAnimation());
+  }
+
+  void changeAnimation() {
+    if (top1 == y1) {
+      top1 = y0;
+      top2 = y1;
+    } else {
+      top1 = y1;
+      top2 = y0;
+    }
+    setState(() {});
   }
 
   @override
@@ -42,11 +78,14 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 36,
                   ),
-
-                  // Image.asset(
-                  //   "assets/images/image02.png",
-                  //   height: 200,
+                  // Hero(
+                  //   tag: 'image01',
+                  //   child: Image.asset(
+                  //     "assets/images/image01.png",
+                  //     height: 300,
+                  //   ),
                   // ),
+                  const LoginAnimation(),
                   const SizedBox(
                     height: 57,
                   ),
@@ -86,13 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 50,
                   ),
-                  Hero(
-                    tag: 'image01',
-                    child: Image.asset(
-                      "assets/images/image01.png",
-                      height: 300,
-                    ),
-                  ),
+
                   SizedBox(
                     height: 60,
                     width: double.infinity,
@@ -117,8 +150,71 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          AnimatedPositioned(
+            left: left1,
+            top: top1,
+            curve: Curves.easeInOutExpo,
+            duration: const Duration(seconds: 3),
+            child: const MessageImageComponent(),
+          ),
+          AnimatedPositioned(
+            left: left1,
+            top: top3,
+            curve: Curves.easeInOutExpo,
+            duration: const Duration(seconds: 3),
+            child: const MessageImageComponent(),
+          ),
+          AnimatedPositioned(
+            left: left2,
+            top: top2,
+            curve: Curves.easeInOutExpo,
+            duration: const Duration(seconds: 3),
+            child: const MessageImageComponent(),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class LoginAnimation extends StatefulWidget {
+  const LoginAnimation({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<LoginAnimation> createState() => _LoginAnimationState();
+}
+
+class _LoginAnimationState extends State<LoginAnimation> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Image.asset(
+        "assets/images/image02.png",
+        height: 200,
+      ),
+    ]);
+  }
+}
+
+class MessageImageComponent extends StatelessWidget {
+  const MessageImageComponent({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Image.asset(
+          "assets/images/message_image/message_component.png",
+          width: 80,
+        ),
+      ],
     );
   }
 }
