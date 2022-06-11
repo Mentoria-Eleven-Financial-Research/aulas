@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/create_account/create_account_page.dart';
+import 'package:todoapp/login/login_page.dart';
 
 import '../shared/widgets/button.dart';
 
 class SplashPage extends StatefulWidget {
+  static const routeName = '/';
   const SplashPage({Key? key}) : super(key: key);
 
   @override
@@ -16,7 +17,12 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 2)).then((value) {
-      buttonKey.currentState!.onChange(true);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+      );
     });
     super.initState();
   }
@@ -40,9 +46,12 @@ class _SplashPageState extends State<SplashPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 200),
-                  Image.asset(
-                    "assets/images/image01.png",
-                    height: 200,
+                  Hero(
+                    tag: 'image01',
+                    child: Image.asset(
+                      "assets/images/image01.png",
+                      height: 200,
+                    ),
                   ),
                   const SizedBox(
                     height: 36,
@@ -62,16 +71,6 @@ class _SplashPageState extends State<SplashPage> {
                   const SizedBox(
                     height: 68,
                   ),
-                  Button(
-                      key: buttonKey,
-                      title: "Get Started",
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CreateAccountPage()));
-                      })
                 ],
               ),
             ),

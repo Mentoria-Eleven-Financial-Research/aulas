@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todoapp/home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
-  static const route = '/login';
+  static const routeName = '/login';
 
   const LoginPage({Key? key}) : super(key: key);
 
@@ -42,10 +42,11 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 36,
                   ),
-                  Image.asset(
-                    "assets/images/image02.png",
-                    height: 200,
-                  ),
+
+                  // Image.asset(
+                  //   "assets/images/image02.png",
+                  //   height: 200,
+                  // ),
                   const SizedBox(
                     height: 57,
                   ),
@@ -84,6 +85,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(
                     height: 50,
+                  ),
+                  Hero(
+                    tag: 'image01',
+                    child: Image.asset(
+                      "assets/images/image02.png",
+                      height: 300,
+                    ),
                   ),
                   SizedBox(
                     height: 60,

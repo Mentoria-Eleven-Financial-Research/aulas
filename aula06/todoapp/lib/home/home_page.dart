@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/shared/widgets/note.dart';
 
+import '../create_note/create_note.dart';
+import '../shared/widgets/button.dart';
+
 typedef Task = Map<String, dynamic>;
 
 class HomePage extends StatefulWidget {
@@ -136,26 +139,26 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.symmetric(horizontal: 16),
-      //   child: Button(
-      //       active: true,
-      //       onPressed: () async {
-      //         Navigator.push(
-      //           context,
-      //           MaterialPageRoute(
-      //             builder: (context) => CreateNotePage(
-      //               onCreate: (task) {
-      //                 final newTask = task;
-      //                 task['id'] = "${tasks.length + 1}";
-      //                 addTask(newTask);
-      //               },
-      //             ),
-      //           ),
-      //         );
-      //       },
-      //       title: "New Task"),
-      // ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Button(
+            active: true,
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CreateNotePage(
+                    onCreate: (task) {
+                      final newTask = task;
+                      task['id'] = "${tasks.length + 1}";
+                      addTask(newTask);
+                    },
+                  ),
+                ),
+              );
+            },
+            title: "New Task"),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
