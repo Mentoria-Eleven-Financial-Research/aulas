@@ -25,6 +25,9 @@ class _LoginPageState extends State<LoginPage> {
   late final double x1;
   late final double y1;
 
+  var _currentAlign = Alignment.center;
+  double turns = 0;
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +40,39 @@ class _LoginPageState extends State<LoginPage> {
 
       setState(() {});
     });
+    alignAnimate();
+
+    Future.delayed(const Duration(seconds: 2)).then((value) {
+      Timer.periodic(const Duration(seconds: 2), (_) => alignAnimate());
+    });
 
     Timer.periodic(const Duration(seconds: 2), (_) => changeAnimation());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void alignAnimate() {
+    if ((_currentAlign == Alignment.centerLeft) ||
+        (_currentAlign == Alignment.bottomLeft)) {
+      _currentAlign = Alignment.topLeft;
+      turns -= 2;
+    } else if (_currentAlign == Alignment.topLeft) {
+      _currentAlign = Alignment.topRight;
+      turns -= 2;
+    } else if (_currentAlign == Alignment.topRight) {
+      _currentAlign = Alignment.bottomRight;
+      turns -= 6;
+    } else if (_currentAlign == Alignment.bottomRight) {
+      _currentAlign = Alignment.bottomLeft;
+      turns -= 2;
+    } else if (_currentAlign == Alignment.center) {
+      _currentAlign = Alignment.centerLeft;
+      turns -= 2;
+    }
+    setState(() {});
   }
 
   void changeAnimation() {
@@ -171,6 +205,19 @@ class _LoginPageState extends State<LoginPage> {
             duration: const Duration(seconds: 3),
             child: const MessageImageComponent(),
           ),
+          AnimatedAlign(
+            duration: const Duration(seconds: 2),
+            alignment: _currentAlign,
+            curve: Curves.slowMiddle,
+            child: AnimatedRotation(
+              turns: turns,
+              curve: Curves.slowMiddle,
+              duration: const Duration(seconds: 2),
+              child: const ChildContainer(
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -229,13 +276,14 @@ class ChildContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
       width: 50,
       height: 50,
       decoration: BoxDecoration(
         color: Colors.yellow,
         shape: shape,
       ),
+      duration: const Duration(),
       child: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
