@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/create_note/create_note.dart';
-import 'package:todoapp/home/home_builder.dart';
 import 'package:todoapp/home/home_controller.dart';
 import 'package:todoapp/home/home_status.dart';
 import 'package:todoapp/shared/widgets/button.dart';
@@ -19,7 +18,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     controller.getTasks();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -30,9 +36,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xffE5E5E5),
         elevation: 0,
       ),
-      body: HomeBuilder(
-        controller: controller,
-        builder: (context, status) {
+      body: ValueListenableBuilder(
+        valueListenable: controller.statusNotifier,
+        builder: (_, status, __) {
           if (status == HomeStatus.loading) {
             return const Center(
               child: CircularProgressIndicator(),

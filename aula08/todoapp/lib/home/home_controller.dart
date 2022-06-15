@@ -1,17 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:todoapp/home/home_repository.dart';
-import 'package:todoapp/home/home_status.dart';
+
+import 'home_status.dart';
 
 typedef Task = Map<String, dynamic>;
 
 class HomeController {
   final HomeRepository repository = HomeRepository();
-  Function() update = () {};
 
-  HomeStatus _status = HomeStatus.empty;
-  HomeStatus get status => _status;
+  final statusNotifier = ValueNotifier(HomeStatus.empty);
+
+  final buttonNotifier = ValueNotifier(HomeStatus.empty);
+
+  HomeStatus get status => statusNotifier.value;
   set status(HomeStatus newValue) {
-    _status = newValue;
-    update();
+    statusNotifier.value = newValue;
   }
 
   List<Task> tasks = [];
@@ -19,7 +22,9 @@ class HomeController {
   HomeController();
 
   void listen(Function() onListen) {
-    update = onListen;
+    statusNotifier.addListener(() {
+      onListen();
+    });
   }
 
   Future<void> getTasks() async {
