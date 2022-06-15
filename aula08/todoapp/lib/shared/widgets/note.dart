@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../home/home_page.dart';
+import '../../home/home_controller.dart';
 
 class Note extends StatelessWidget {
   final Task task;

@@ -12,7 +12,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final controller = HomeController();
+  late final controller = HomeController(() {
+    setState(() {});
+  });
+
+  @override
+  void initState() {
+    controller.getTasks();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

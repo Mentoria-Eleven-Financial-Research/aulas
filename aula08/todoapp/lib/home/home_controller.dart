@@ -1,46 +1,37 @@
+import 'package:todoapp/home/home_repository.dart';
+
 typedef Task = Map<String, dynamic>;
 
 class HomeController {
-  final List<Task> tasks = [
-    {
-      "id": "1",
-      "title": "Teste 01 asdf0",
-      "subtitle": "Meu subfsdfjh asbdfias dfas",
-      "value": false
-    },
-    {
-      "id": "2",
-      "title": "Teste 010 asdf ",
-      "subtitle": "Meu subfsdfjh asbdfias dfas",
-      "value": false
-    },
-    {
-      "id": "3",
-      "title": "Teste 010423 dsa",
-      "subtitle": "Meu subfsdfjh asbdfias dfas",
-      "value": true
-    },
-    {
-      "id": "4",
-      "title": "Teste 0101231 vad",
-      "subtitle": "Meu subfsdfjh asbdfias dfas",
-      "value": true
-    }
-  ];
-  //{
-  //title: "AFFSD"
-  //subtitle: "AAA"
-  //value: true
-  //
-  //}
+  final HomeRepository repository = HomeRepository();
+  final Function() update;
+  bool isLoading = false;
+  bool hasData = false;
+  bool hasError = false;
+  List<Task> tasks = [];
+
+  HomeController(this.update);
+
+  Future<void> getTasks() async {
+    isLoading = true;
+    update();
+    final response = await repository.getTasks();
+    tasks = response;
+    isLoading = false;
+    hasData = true;
+    update();
+  }
 
   List<Task> get tasksTodo =>
       tasks.where((element) => element['value'] == false).toList();
   List<Task> get tasksDone =>
       tasks.where((element) => element['value'] == true).toList();
 
-  void addTask(Task task) {
+  Future<void> addTask(Task task) async {
+    isLoading = true;
+    await Future.delayed(const Duration(seconds: 3));
     tasks.add(task);
+    hasData = true;
   }
 
   void updateTask(String id, bool value) {
