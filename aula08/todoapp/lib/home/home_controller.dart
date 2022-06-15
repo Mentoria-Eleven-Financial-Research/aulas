@@ -1,25 +1,32 @@
 import 'package:todoapp/home/home_repository.dart';
+import 'package:todoapp/home/home_status.dart';
 
 typedef Task = Map<String, dynamic>;
 
 class HomeController {
   final HomeRepository repository = HomeRepository();
-  final Function() update;
-  bool isLoading = false;
-  bool hasData = false;
-  bool hasError = false;
+  Function() update = () {};
+
+  HomeStatus _status = HomeStatus.empty;
+  HomeStatus get status => _status;
+  set status(HomeStatus newValue) {
+    _status = newValue;
+    update();
+  }
+
   List<Task> tasks = [];
 
-  HomeController(this.update);
+  HomeController();
+
+  void listen(Function() onListen) {
+    update = onListen;
+  }
 
   Future<void> getTasks() async {
-    isLoading = true;
-    update();
+    status = HomeStatus.loading;
     final response = await repository.getTasks();
     tasks = response;
-    isLoading = false;
-    hasData = true;
-    update();
+    status = HomeStatus.success;
   }
 
   List<Task> get tasksTodo =>
@@ -28,10 +35,10 @@ class HomeController {
       tasks.where((element) => element['value'] == true).toList();
 
   Future<void> addTask(Task task) async {
-    isLoading = true;
+    status = HomeStatus.loading;
     await Future.delayed(const Duration(seconds: 3));
     tasks.add(task);
-    hasData = true;
+    status = HomeStatus.success;
   }
 
   void updateTask(String id, bool value) {

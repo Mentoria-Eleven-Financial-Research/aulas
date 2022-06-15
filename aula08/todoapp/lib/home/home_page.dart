@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/create_note/create_note.dart';
+import 'package:todoapp/home/home_builder.dart';
 import 'package:todoapp/home/home_controller.dart';
+import 'package:todoapp/home/home_status.dart';
 import 'package:todoapp/shared/widgets/button.dart';
 import 'package:todoapp/shared/widgets/note.dart';
 
@@ -12,9 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final controller = HomeController(() {
-    setState(() {});
-  });
+  late final controller = HomeController();
 
   @override
   void initState() {
@@ -30,49 +30,62 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xffE5E5E5),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (controller.tasksTodo.isNotEmpty)
-              Text(
-                "Tarefas (${controller.tasksTodo.length})",
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: HomeBuilder(
+        controller: controller,
+        builder: (context, status) {
+          if (status == HomeStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (status == HomeStatus.success) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  if (controller.tasksTodo.isNotEmpty)
+                    Text(
+                      "Tarefas (${controller.tasksTodo.length})",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.tasksTodo.length,
+                      itemBuilder: (_, index) => Note(
+                          task: controller.tasksTodo[index],
+                          onChanged: (value) {
+                            controller.updateTask(
+                                controller.tasksTodo[index]['id'], value);
+                          })),
+                  if (controller.tasksDone.isNotEmpty)
+                    Text(
+                      "Finalizadas (${controller.tasksDone.length})",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.tasksDone.length,
+                      itemBuilder: (_, index) => Note(
+                          task: controller.tasksDone[index],
+                          onChanged: (value) {
+                            controller.updateTask(
+                                controller.tasksDone[index]['id'], value);
+                          })),
+                ],
               ),
-            const SizedBox(
-              height: 16,
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller.tasksTodo.length,
-                itemBuilder: (_, index) => Note(
-                    task: controller.tasksTodo[index],
-                    onChanged: (value) {
-                      controller.updateTask(
-                          controller.tasksTodo[index]['id'], value);
-                    })),
-            if (controller.tasksDone.isNotEmpty)
-              Text(
-                "Finalizadas (${controller.tasksDone.length})",
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            const SizedBox(
-              height: 16,
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller.tasksDone.length,
-                itemBuilder: (_, index) => Note(
-                    task: controller.tasksDone[index],
-                    onChanged: (value) {
-                      controller.updateTask(
-                          controller.tasksDone[index]['id'], value);
-                    })),
-          ],
-        ),
+            );
+          } else {
+            return const Text("Vazio");
+          }
+        },
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
