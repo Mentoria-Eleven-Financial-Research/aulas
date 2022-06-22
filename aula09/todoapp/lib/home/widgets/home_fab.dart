@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/create_note/create_note.dart';
 
-import '../../create_note/create_note.dart';
 import '../../shared/widgets/button.dart';
 import '../controller/home_controller.dart';
 
@@ -17,21 +17,22 @@ class HomeFAB extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Button(
-          active: true,
-          onPressed: () async {
-            Navigator.pushNamed(
-              context,
-              NewNotePage.routeName,
-              arguments: NewNotePageArguments(
-                onCreate: (task) {
-                  final newTask = task;
-                  task['id'] = "${controller.tasks.length + 1}";
-                  controller.addTask(newTask);
-                },
-              ),
-            );
-          },
-          title: "New Task"),
+        active: true,
+        onPressed: () async {
+          Navigator.pushNamed(
+            context,
+            NewNotePage.routeName,
+            arguments: NewNotePageArguments(
+              onCreate: (task) {
+                final newTask = task;
+                task['id'] = "${controller.tasks.length + 1}";
+                controller.addTask(newTask);
+              },
+            ),
+          );
+        },
+        title: "New Task",
+      ),
     );
   }
 }

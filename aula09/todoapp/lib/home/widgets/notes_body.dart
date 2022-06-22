@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/shared/widgets/note.dart';
 
-import '../../shared/widgets/note.dart';
 import '../controller/home_controller.dart';
 import '../home_page.dart';
 
