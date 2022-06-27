@@ -5,12 +5,15 @@ import '../home/home_page.dart';
 class NewNotePageArguments {
   final Task? task;
   final Key? key;
-  final Function(Task)? onCreate;
+
+  Function(Task) onCreate;
+  Function(Task) onUpdate;
 
   NewNotePageArguments({
     this.task,
     this.key,
-    this.onCreate,
+    required this.onCreate,
+    required this.onUpdate,
   });
 }
 
@@ -26,7 +29,7 @@ class NewNotePage extends StatefulWidget {
 }
 
 class _NewNotePageState extends State<NewNotePage> {
-  late Task task;
+  Task task = <String, dynamic>{};
 
   final _titleController = TextEditingController();
   final _subtitleController = TextEditingController();
@@ -37,7 +40,7 @@ class _NewNotePageState extends State<NewNotePage> {
     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
       args = ModalRoute.of(context)!.settings.arguments as NewNotePageArguments;
       if (args.task == null) {
-        task = {"value": false};
+        task = <String, dynamic>{'value': false};
       } else {
         task = args.task!;
         _titleController.text = args.task!['title'];
@@ -50,7 +53,7 @@ class _NewNotePageState extends State<NewNotePage> {
     super.initState();
   }
 
-  bool get isEditing => args.task != null && args.task!.containsKey('id');
+  bool get isEditing => task['id'] != null;
 
   bool hasAccept = false;
 
@@ -70,80 +73,83 @@ class _NewNotePageState extends State<NewNotePage> {
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
-                children: [
-                  const SizedBox(height: 140),
-                  Text(
-                    isEditing ? "Editar Nota" : "Criar nota",
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 36,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xffFFFFFF),
-                      borderRadius: BorderRadius.circular(100),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 140),
+                    Text(
+                      isEditing ? "Editar Nota" : "Criar nota",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        controller: _titleController,
-                        onChanged: (value) => task['title'] = value,
-                        decoration: const InputDecoration(
-                          hintText: "Title",
-                          border: InputBorder.none,
+                    const SizedBox(
+                      height: 36,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFFFFFF),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: TextField(
+                          controller: _titleController,
+                          onChanged: (value) => task['title'] = value,
+                          decoration: const InputDecoration(
+                            hintText: "Title",
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xffFFFFFF),
-                      borderRadius: BorderRadius.circular(100),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextField(
-                        onChanged: (value) => task['subtitle'] = value,
-                        controller: _subtitleController,
-                        decoration: const InputDecoration(
-                          hintText: "Description",
-                          border: InputBorder.none,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFFFFFF),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: TextField(
+                          onChanged: (value) => task['subtitle'] = value,
+                          controller: _subtitleController,
+                          decoration: const InputDecoration(
+                            hintText: "Description",
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  SizedBox(
-                    height: 60,
-                    width: double.infinity,
-                    child: ElevatedButton(
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    SizedBox(
+                      height: 60,
+                      width: double.infinity,
+                      child: ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                                 const Color(0xff38C24E))),
                         onPressed: () {
                           if (isEditing) {
-                            Navigator.pop(context, task);
+                            args.onUpdate(task);
                           } else {
-                            args.onCreate!(task);
-                            Navigator.pop(context);
+                            args.onCreate(task);
                           }
                         },
                         child: Text(
                           isEditing ? " Salvar Nota" : "Criar nota",
                           style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
-                        )),
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
           )

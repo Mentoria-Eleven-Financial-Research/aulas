@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todoapp/home/bloc/home_controller.dart';
+import 'package:todoapp/home/bloc/home_event.dart';
 import 'package:todoapp/shared/widgets/dialog_body.dart';
 
 import '../../create_note/create_note.dart';
 import '../../home/home_page.dart';
 
-class Note extends StatelessWidget {
+class Note extends StatefulWidget {
   final Task task;
-  final VoidCallback onUpdate;
-  final Function(bool) onChanged;
-  final Function(Task) onSave;
-  final Function(String) onDelete;
+
   const Note({
     Key? key,
     required this.task,
-    required this.onChanged,
-    required this.onSave,
-    required this.onDelete,
-    required this.onUpdate,
   }) : super(key: key);
+
+  @override
+  State<Note> createState() => _NoteState();
+}
+
+class _NoteState extends State<Note> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +36,13 @@ class Note extends StatelessWidget {
           children: [
             Checkbox(
                 shape: const CircleBorder(),
-                value: task['value'],
+                value: widget.task['value'],
                 onChanged: (value) {
                   if (value != null) {
-                    onChanged(value);
+                    widget.task['value'] = value;
+                    context
+                        .read<HomeBloc>()
+                        .add(EditTaskEvent(task: widget.task));
                   }
                 }),
             Expanded(
@@ -41,7 +50,7 @@ class Note extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    task['title'],
+                    widget.task['title'],
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
@@ -49,7 +58,7 @@ class Note extends StatelessWidget {
                     height: 8,
                   ),
                   Text(
-                    task['subtitle'],
+                    widget.task['subtitle'],
                     style: const TextStyle(fontSize: 13),
                   )
                 ],
@@ -64,23 +73,31 @@ class Note extends StatelessWidget {
                       context,
                       NewNotePage.routeName,
                       arguments: NewNotePageArguments(
-                        task: task,
-                        onCreate: onSave,
+                        task: widget.task,
+                        onCreate: (task) {
+                          BlocProvider.of<HomeBloc>(context)
+                              .add(AddTaskEvent(task: task));
+                          Navigator.pop(context);
+                        },
+                        onUpdate: (task) {
+                          BlocProvider.of<HomeBloc>(context)
+                              .add(AddTaskEvent(task: task));
+                          Navigator.pop(context);
+                        },
                       ),
                     );
-                    onUpdate();
                   },
                   icon: const Icon(Icons.edit),
                 ),
                 IconButton(
-                  onPressed: () async {
-                    final bool? delete = await showDialog(
+                  onPressed: () {
+                    showDialog(
                       context: context,
                       barrierDismissible: false,
                       builder: (BuildContext context) {
                         return AlertDialog(
                           content: DialogBody(
-                            noteTitle: task['title'],
+                            noteTitle: widget.task['title'],
                           ),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
@@ -91,11 +108,16 @@ class Note extends StatelessWidget {
                           ),
                         );
                       },
-                    );
-
-                    if (delete != null && delete) {
-                      onDelete(task['id']);
-                    }
+                    ).then((value) {
+                      if (value != null && value) {
+                        BlocProvider.of<HomeBloc>(context).add(
+                          RemoveTaskEvent(
+                            id: widget.task['id'],
+                          ),
+                        );
+                      }
+                      return null;
+                    });
                   },
                   icon: const Icon(Icons.delete),
                 ),

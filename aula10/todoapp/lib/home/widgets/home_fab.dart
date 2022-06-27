@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/create_note/create_note.dart';
 
 import '../../shared/widgets/button.dart';
-import '../controller/home_controller.dart';
+import '../bloc/home_controller.dart';
+import '../bloc/home_event.dart';
 
-class HomeFAB extends StatelessWidget {
+class HomeFAB extends StatefulWidget {
   const HomeFAB({
     Key? key,
-    required this.controller,
   }) : super(key: key);
 
-  final HomeController controller;
+  @override
+  State<HomeFAB> createState() => _HomeFABState();
+}
+
+class _HomeFABState extends State<HomeFAB> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +33,14 @@ class HomeFAB extends StatelessWidget {
             NewNotePage.routeName,
             arguments: NewNotePageArguments(
               onCreate: (task) {
-                final newTask = task;
-                task['id'] = "${controller.tasks.length + 1}";
-                controller.addTask(newTask);
+                Navigator.pop(context);
+                BlocProvider.of<HomeBloc>(context)
+                    .add(AddTaskEvent(task: task));
+              },
+              onUpdate: (task) {
+                Navigator.pop(context);
+                BlocProvider.of<HomeBloc>(context)
+                    .add(AddTaskEvent(task: task));
               },
             ),
           );

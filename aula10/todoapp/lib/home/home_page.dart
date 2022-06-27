@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
-import 'package:todoapp/home/controller/home_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todoapp/home/bloc/home_controller.dart';
+import 'package:todoapp/home/bloc/home_state.dart';
 
 import 'widgets/home_fab.dart';
 import 'widgets/notes_body.dart';
@@ -20,68 +18,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final HomeController controller;
-
-  void onUpdate() {
-    setState(() {});
-  }
-
-  late ReactionDisposer disposer;
-
   @override
   void initState() {
-    controller = HomeController();
     super.initState();
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) {
-      // controller.checkHasUser(context);
-
-      disposer = reaction(
-        (_) => controller.tasks,
-        (myTasks) => log(
-          '[MOBX]$myTasks',
-        ),
-        onError: (e, r) => log('[MOBX] $e /n $r'),
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    disposer();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffE5E5E5),
-      appBar: AppBar(
-        title: const Text('TodoApp'),
+    return BlocProvider<HomeBloc>(
+      create: (context) => HomeBloc(),
+      child: Scaffold(
         backgroundColor: const Color(0xffE5E5E5),
-        elevation: 0,
+        appBar: AppBar(
+          title: const Text('TodoApp'),
+          backgroundColor: const Color(0xffE5E5E5),
+          elevation: 0,
+        ),
+        body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (
+            context,
+            state,
+          ) {
+            return state.when(
+              onChanging: SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    NotesTodo(),
+                    FinishedNotes(),
+                  ],
+                ),
+              ),
+              onEmpty: SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    NotesTodo(),
+                    FinishedNotes(),
+                  ],
+                ),
+              ),
+              onRegular: SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    NotesTodo(),
+                    FinishedNotes(),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+        floatingActionButton: const HomeFAB(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      body: Observer(builder: (_) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              NotesBody(
-                controller: controller,
-                sectionTitle: 'Tarefas',
-                tasks: controller.tasksTodo,
-                onUpdate: onUpdate,
-              ),
-              NotesBody(
-                controller: controller,
-                sectionTitle: 'Finalizadas',
-                tasks: controller.tasksDone,
-                onUpdate: onUpdate,
-              ),
-            ],
-          ),
-        );
-      }),
-      floatingActionButton: HomeFAB(controller: controller),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
