@@ -40,13 +40,8 @@ class _HomePageState extends State<HomePage> {
             state,
           ) {
             return state.when(
-              onChanging: SingleChildScrollView(
-                child: Column(
-                  children: const [
-                    NotesTodo(),
-                    FinishedNotes(),
-                  ],
-                ),
+              onChanging: const Center(
+                child: CircularProgressIndicator(),
               ),
               onEmpty: SingleChildScrollView(
                 child: Column(

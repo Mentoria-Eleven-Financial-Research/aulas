@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/home/bloc/home_event.dart';
 import 'package:todoapp/home/bloc/home_state.dart';
@@ -21,8 +23,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _addTask(
     AddTaskEvent event,
     Emitter<HomeState> emitter,
-  ) {
-    emitter(HomeStateChangingList(tasks: _tasks));
+  ) async {
+    emitter(HomeStateChangingList());
+    await Future.delayed(const Duration(milliseconds: 50));
 
     Task task = event.task;
     if (_tasks.isEmpty) {
@@ -37,12 +40,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _editTask(
     EditTaskEvent event,
     Emitter<HomeState> emitter,
-  ) {
-    emitter(HomeStateChangingList(tasks: _tasks));
-    Task element = _tasks.firstWhere(
+  ) async {
+    emitter(HomeStateChangingList());
+    await Future.delayed(const Duration(milliseconds: 50));
+    int index = _tasks.indexWhere(
       (element) => element['id'] == event.task['id'],
     );
-    element = event.task;
+    _tasks[index] = event.task;
+    log('[LOG]$_tasks');
 
     emitter(HomeStateRegular(tasks: _tasks));
   }
@@ -50,8 +55,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _removeTask(
     RemoveTaskEvent event,
     Emitter<HomeState> emitter,
-  ) {
-    emitter(HomeStateChangingList(tasks: _tasks));
+  ) async {
+    emitter(HomeStateChangingList());
+    await Future.delayed(const Duration(milliseconds: 50));
     _tasks.removeWhere((element) => element['id'] == event.id);
     emitter(HomeStateRegular(tasks: _tasks));
   }

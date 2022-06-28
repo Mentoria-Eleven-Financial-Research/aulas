@@ -19,10 +19,7 @@ class HomeStateRegular extends HomeState {
 }
 
 class HomeStateChangingList extends HomeState {
-  HomeStateChangingList({required this.tasks});
-
-  final int stateCode = 3;
-  final List<Task> tasks;
+  HomeStateChangingList();
 }
 
 extension When on HomeState {
