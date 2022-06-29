@@ -24,7 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emitter,
   ) async {
     emitter(HomeStateChangingList());
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 10));
 
     Task task = event.task;
     if (_tasks.isEmpty) {
@@ -41,7 +41,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emitter,
   ) async {
     emitter(HomeStateChangingList());
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 10));
     int index = _tasks.indexWhere(
       (element) => element['id'] == event.task['id'],
     );
@@ -56,7 +56,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emitter,
   ) async {
     emitter(HomeStateChangingList());
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 10));
     _tasks.removeWhere((element) => element['id'] == event.id);
     emitter(HomeStateRegular(tasks: _tasks));
   }

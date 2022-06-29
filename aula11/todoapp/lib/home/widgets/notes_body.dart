@@ -11,7 +11,7 @@ class NotesTodo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NotesBody(
-        sectionTitle: 'Finalizadas',
+        sectionTitle: 'A Fazer',
         tasks: BlocProvider.of<HomeBloc>(context).tasksTodo);
   }
 }

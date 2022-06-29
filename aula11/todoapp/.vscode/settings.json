@@ -1,5 +1,5 @@
 {
-    // "editor.fontSize": 24,
+    "editor.fontSize": 24,
      "editor.codeActionsOnSave": {
         "source.fixAll": true
     }

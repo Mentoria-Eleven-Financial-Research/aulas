@@ -6,16 +6,12 @@ abstract class HomeState {}
 
 class HomeStateEmpty extends HomeState {
   HomeStateEmpty();
-
-  final int stateCode = 1;
 }
 
 class HomeStateRegular extends HomeState {
   HomeStateRegular({required this.tasks});
 
   final List<Task> tasks;
-
-  final int stateCode = 2;
 }
 
 class HomeStateChangingList extends HomeState {
