@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/home/bloc/home_event.dart';
@@ -46,8 +45,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     int index = _tasks.indexWhere(
       (element) => element['id'] == event.task['id'],
     );
+
     _tasks[index] = event.task;
-    log('[LOG]$_tasks');
 
     emitter(HomeStateRegular(tasks: _tasks));
   }

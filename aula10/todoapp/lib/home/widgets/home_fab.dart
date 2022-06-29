@@ -40,7 +40,7 @@ class _HomeFABState extends State<HomeFAB> {
               onUpdate: (task) {
                 Navigator.pop(context);
                 BlocProvider.of<HomeBloc>(context)
-                    .add(AddTaskEvent(task: task));
+                    .add(EditTaskEvent(task: task));
               },
             ),
           );

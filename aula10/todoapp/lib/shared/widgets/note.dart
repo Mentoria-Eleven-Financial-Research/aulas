@@ -81,7 +81,7 @@ class _NoteState extends State<Note> {
                         },
                         onUpdate: (task) {
                           BlocProvider.of<HomeBloc>(context)
-                              .add(AddTaskEvent(task: task));
+                              .add(EditTaskEvent(task: task));
                           Navigator.pop(context);
                         },
                       ),
