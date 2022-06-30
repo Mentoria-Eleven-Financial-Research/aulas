@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/home/bloc/home_controller.dart';
 import 'package:todoapp/home/bloc/home_state.dart';
+import 'package:todoapp/login/repositories/login_repository_impl.dart';
 
 import 'widgets/home_fab.dart';
 import 'widgets/notes_body.dart';
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeBloc>(
-      create: (context) => HomeBloc(),
+      create: (context) => HomeBloc(repository: LoginRepositoryImpl()),
       child: Scaffold(
         backgroundColor: const Color(0xffE5E5E5),
         appBar: AppBar(
