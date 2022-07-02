@@ -7,7 +7,10 @@
         {
             "name": "apirest",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define=BASE_URL=https://jsonplaceholder.typicode.com",
+            ]
         },
         {
             "name": "apirest (profile mode)",

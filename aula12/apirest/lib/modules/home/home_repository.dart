@@ -1,12 +1,12 @@
-import 'package:apirest/http_client.dart';
 import 'package:apirest/modules/home/models/post_model.dart';
+import 'package:apirest/shared/services/http/http_client_dio.dart';
 
 abstract class HomeRepository {
   Future<List<PostModel>> getPosts();
 }
 
 class HomeRepositoryImpl implements HomeRepository {
-  final client = HttpClientImpl();
+  final client = HttpClientDio();
   @override
   Future<List<PostModel>> getPosts() async {
     try {
