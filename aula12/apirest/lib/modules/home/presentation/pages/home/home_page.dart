@@ -1,4 +1,5 @@
-import 'package:apirest/modules/home/home_controller.dart';
+import 'package:apirest/modules/home/presentation/pages/home/home_controller.dart';
+import 'package:apirest/modules/home/presentation/widgets/list_post_widget.dart';
 import 'package:apirest/shared/widgets/api_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -28,15 +29,9 @@ class _HomePageState extends State<HomePage> {
         controller: controller,
         // builderInitial: (_) => ElevatedButton(
         //     onPressed: controller.getPosts, child: const Text("Buscar posts")),
-        builderSuccess: (_) => ListView.builder(
-            itemCount: controller.posts.length,
-            itemBuilder: (_, index) => Card(
-                  child: ListTile(
-                    leading: CircleAvatar(
-                        child: Text("${controller.posts[index].id}")),
-                    title: Text(controller.posts[index].title),
-                  ),
-                )),
+        builderSuccess: (_) => ListPostsWidget(
+          posts: controller.posts,
+        ),
       ),
     );
   }

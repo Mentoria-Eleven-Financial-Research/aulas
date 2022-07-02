@@ -1,4 +1,4 @@
-import 'package:apirest/modules/home/home_page.dart';
+import 'package:apirest/modules/home/presentation/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,6 +1,5 @@
-import 'package:apirest/shared/services/http/custom_dio/custom_dio.dart';
-
-import 'http_client.dart';
+import '../../../domain/services/http/http_client.dart';
+import '../custom_dio/custom_dio.dart';
 
 class HttpClientDio extends HttpClient {
   late final client = CustomDio();
