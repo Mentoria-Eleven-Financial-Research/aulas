@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/login/login_page.dart';
+import 'package:todoapp/modules/login/login/login_page.dart';
 
-import '../shared/widgets/button.dart';
+import 'package:todoapp/shared/widgets/button.dart';
+
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SplashPage extends StatefulWidget {
   static const routeName = '/';
@@ -17,13 +19,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 2)).then((value) {
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(seconds: 2),
-          pageBuilder: (_, __, ___) => const LoginPage(),
-        ),
-      );
+      Modular.to.pushReplacementNamed(LoginPage.routeName);
     });
     super.initState();
   }

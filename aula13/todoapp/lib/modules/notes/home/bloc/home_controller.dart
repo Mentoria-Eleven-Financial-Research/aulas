@@ -1,12 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todoapp/home/bloc/home_event.dart';
-import 'package:todoapp/home/bloc/home_state.dart';
-import 'package:todoapp/login/repositories/login_repository.dart';
-
+import 'package:todoapp/modules/notes/repository/home_repository.dart';
 import '../home_page.dart';
+import 'home_event.dart';
+import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final LoginRepository repository;
+  final HomeRepository repository;
   HomeBloc({
     required this.repository,
   }) : super(HomeStateEmpty()) {
@@ -73,7 +72,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void removeTask(int id) async {
     tasks.removeWhere((element) => element['id'] == id);
-    await repository.forgotPassword(user: 'user');
+    await repository.deleteTask(id.toString());
   }
 
   void _removeTask(

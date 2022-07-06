@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todoapp/home/bloc/home_controller.dart';
-import 'package:todoapp/home/bloc/home_event.dart';
-import 'package:todoapp/shared/widgets/dialog_body.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../create_note/create_note.dart';
-import '../../home/home_page.dart';
+import 'package:todoapp/modules/notes/create_note/create_note.dart';
+import 'package:todoapp/modules/notes/home/bloc/home_controller.dart';
+import 'package:todoapp/modules/notes/home/bloc/home_event.dart';
+
+import 'package:todoapp/modules/notes/home/home_page.dart';
+import 'package:todoapp/shared/widgets/dialog_body.dart';
 
 class Note extends StatefulWidget {
   final Task task;
@@ -40,8 +41,7 @@ class _NoteState extends State<Note> {
                 onChanged: (value) {
                   if (value != null) {
                     widget.task['value'] = value;
-                    context
-                        .read<HomeBloc>()
+                    Modular.get<HomeBloc>()
                         .add(EditTaskEvent(task: widget.task));
                   }
                 }),
@@ -69,22 +69,9 @@ class _NoteState extends State<Note> {
               children: [
                 IconButton(
                   onPressed: () async {
-                    await Navigator.pushNamed(
-                      context,
+                    Modular.to.pushNamed(
                       NewNotePage.routeName,
-                      arguments: NewNotePageArguments(
-                        task: widget.task,
-                        onCreate: (task) {
-                          BlocProvider.of<HomeBloc>(context)
-                              .add(AddTaskEvent(task: task));
-                          Navigator.pop(context);
-                        },
-                        onUpdate: (task) {
-                          BlocProvider.of<HomeBloc>(context)
-                              .add(EditTaskEvent(task: task));
-                          Navigator.pop(context);
-                        },
-                      ),
+                      arguments: {'data': widget.task},
                     );
                   },
                   icon: const Icon(Icons.edit),
@@ -110,7 +97,7 @@ class _NoteState extends State<Note> {
                       },
                     ).then((value) {
                       if (value != null && value) {
-                        BlocProvider.of<HomeBloc>(context).add(
+                        Modular.get<HomeBloc>().add(
                           RemoveTaskEvent(
                             id: widget.task['id'],
                           ),

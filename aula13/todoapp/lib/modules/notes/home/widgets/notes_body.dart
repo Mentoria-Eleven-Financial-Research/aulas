@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todoapp/shared/widgets/note.dart';
 
 import '../bloc/home_controller.dart';
@@ -11,8 +11,9 @@ class NotesTodo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NotesBody(
-        sectionTitle: 'A Fazer',
-        tasks: BlocProvider.of<HomeBloc>(context).tasksTodo);
+      sectionTitle: 'A Fazer',
+      tasks: Modular.get<HomeBloc>().tasksTodo,
+    );
   }
 }
 
@@ -23,7 +24,7 @@ class FinishedNotes extends StatelessWidget {
   Widget build(BuildContext context) {
     return NotesBody(
       sectionTitle: 'Finalizadas',
-      tasks: BlocProvider.of<HomeBloc>(context).tasksDone,
+      tasks: Modular.get<HomeBloc>().tasksDone,
     );
   }
 }

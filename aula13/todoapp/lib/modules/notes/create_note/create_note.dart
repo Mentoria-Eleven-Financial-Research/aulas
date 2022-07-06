@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
-
-import '../home/home_page.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:todoapp/modules/notes/home/bloc/home_controller.dart';
+import 'package:todoapp/modules/notes/home/bloc/home_event.dart';
+import 'package:todoapp/modules/notes/home/home_page.dart';
 
 class NewNotePageArguments {
   final Task? task;
   final Key? key;
 
-  Function(Task) onCreate;
-  Function(Task) onUpdate;
-
   NewNotePageArguments({
     this.task,
     this.key,
-    required this.onCreate,
-    required this.onUpdate,
   });
 }
 
 class NewNotePage extends StatefulWidget {
-  static const routeName = '/new_note';
+  static const routeName = '/home/newNote';
 
   const NewNotePage({
     Key? key,
@@ -33,18 +30,17 @@ class _NewNotePageState extends State<NewNotePage> {
 
   final _titleController = TextEditingController();
   final _subtitleController = TextEditingController();
-  late final NewNotePageArguments args;
 
   @override
   void initState() {
     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
-      args = ModalRoute.of(context)!.settings.arguments as NewNotePageArguments;
-      if (args.task == null) {
+      task = Modular.args.data?['data'] ?? <String, dynamic>{};
+      if (!task.containsKey('value')) {
         task = <String, dynamic>{'value': false};
       } else {
-        task = args.task!;
-        _titleController.text = args.task!['title'];
-        _subtitleController.text = args.task!['subtitle'];
+        task = task;
+        _titleController.text = task['title'];
+        _subtitleController.text = task['subtitle'];
       }
 
       setState(() {});
@@ -135,9 +131,13 @@ class _NewNotePageState extends State<NewNotePage> {
                                 const Color(0xff38C24E))),
                         onPressed: () {
                           if (isEditing) {
-                            args.onUpdate(task);
+                            Navigator.pop(context);
+                            Modular.get<HomeBloc>()
+                                .add(EditTaskEvent(task: task));
                           } else {
-                            args.onCreate(task);
+                            Navigator.pop(context);
+                            Modular.get<HomeBloc>()
+                                .add(AddTaskEvent(task: task));
                           }
                         },
                         child: Text(

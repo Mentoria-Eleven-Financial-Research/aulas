@@ -1,9 +1,8 @@
-import 'package:todoapp/login/repositories/login_repository.dart';
+import 'login_repository.dart';
 
 class LoginRepositoryImpl extends LoginRepository {
   @override
   Future<bool> forgotPassword({required String user}) {
-    // TODO: implement forgotPassword
     throw UnimplementedError();
   }
 

@@ -4,6 +4,8 @@ import 'package:todoapp/shared/widgets/button.dart';
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({Key? key}) : super(key: key);
 
+  static const String routeName = '/createAccount';
+
   @override
   State<CreateAccountPage> createState() => _CreateAccountPageState();
 }

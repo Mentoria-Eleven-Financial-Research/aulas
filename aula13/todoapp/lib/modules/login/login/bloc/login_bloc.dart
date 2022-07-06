@@ -1,10 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:todoapp/login/bloc/login_event.dart';
-import 'package:todoapp/login/bloc/login_state.dart';
-import 'package:todoapp/login/repositories/login_repository.dart';
+import 'package:todoapp/modules/login/login/bloc/login_event.dart';
+import 'package:todoapp/modules/login/login/bloc/login_state.dart';
+import 'package:todoapp/modules/login/login/repositories/login_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository repository;

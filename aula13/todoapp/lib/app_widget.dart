@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/create_note/create_note.dart';
-import 'package:todoapp/home/home_page.dart';
-import 'package:todoapp/login/login_page.dart';
-import 'package:todoapp/splash/splash_page.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-       
-      initialRoute: HomePage.routeName,
-      routes: {
-        SplashPage.routeName: (context) => const SplashPage(),
-        LoginPage.routeName: (context) => const LoginPage(),
-        HomePage.routeName: (context) => const HomePage(),
-        NewNotePage.routeName: (context) => const NewNotePage(),
-      },
+    return MaterialApp.router(
+      title: 'ToDo App',
+      routeInformationParser: Modular.routeInformationParser,
+      routerDelegate: Modular.routerDelegate,
     );
   }
 }
