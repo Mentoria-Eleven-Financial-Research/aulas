@@ -8,6 +8,8 @@ import 'package:todoapp/modules/login/login/bloc/login_state.dart';
 import 'package:todoapp/modules/notes/home/home_page.dart';
 import 'package:todoapp/shared/widgets/button.dart';
 
+import '../../../shared/theme/app_theme_injection.dart';
+
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
 
@@ -161,9 +163,13 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Button(
                         active: true,
-                        onPressed: () => Modular.to.pushNamed(
-                          CreateAccountPage.routeName,
-                        ),
+                        onPressed: () {
+                          AppThemeInjection.controller(context)
+                              .changeTheme("default");
+                          return Modular.to.pushNamed(
+                            CreateAccountPage.routeName,
+                          );
+                        },
                         title: 'Create account',
                       ),
                       const SizedBox(

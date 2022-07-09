@@ -7,8 +7,12 @@
         {
             "name": "todoapp",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define=BRAND=gabul"
+            ]
         },
+        
         {
             "name": "todoapp (profile mode)",
             "request": "launch",

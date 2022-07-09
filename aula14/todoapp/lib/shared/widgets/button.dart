@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/shared/theme/app_theme_injection.dart';
 
 class Button extends StatefulWidget {
   final Function() onPressed;
@@ -35,8 +36,9 @@ class ButtonState extends State<Button> {
       width: widget.width ?? double.infinity,
       child: ElevatedButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                  _active ? const Color(0xff38C24E) : Colors.grey)),
+              backgroundColor: MaterialStateProperty.all(_active
+                  ? AppThemeInjection.of(context).colors.buttonActive
+                  : AppThemeInjection.of(context).colors.buttonInactive)),
           onPressed: _active ? widget.onPressed : null,
           child: Text(
             widget.title,

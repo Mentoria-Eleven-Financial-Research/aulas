@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:todoapp/modules/notes/home/bloc/home_controller.dart';
 import 'package:todoapp/modules/notes/home/bloc/home_event.dart';
 import 'package:todoapp/modules/notes/home/home_page.dart';
+import 'package:todoapp/shared/theme/app_theme_injection.dart';
 
 class NewNotePageArguments {
   final Task? task;
@@ -128,7 +129,9 @@ class _NewNotePageState extends State<NewNotePage> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                const Color(0xff38C24E))),
+                                AppThemeInjection.of(context)
+                                    .colors
+                                    .buttonActive)),
                         onPressed: () {
                           if (isEditing) {
                             Navigator.pop(context);

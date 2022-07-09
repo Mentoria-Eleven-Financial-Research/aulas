@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/shared/widgets/button.dart';
 
+import '../login/login_page.dart';
+
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({Key? key}) : super(key: key);
 
@@ -62,13 +64,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     isLoading = true;
     setState(() {});
     await Future.delayed(const Duration(seconds: 5));
-    hasError = true;
+    hasError = false;
     isLoading = false;
-    messageError = "  Nao foi possivel logar";
+
     setState(() {});
-    // ignore: use_build_context_synchronously
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => const LoginPage()));
+    //  ignore: use_build_context_synchronously
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
   @override
