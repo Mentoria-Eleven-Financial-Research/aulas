@@ -1,17 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:todoapp/home/bloc/home_controller.dart';
-import 'package:todoapp/home/bloc/home_state.dart';
-import 'package:todoapp/home/home_page.dart';
-import 'package:todoapp/login/repositories/login_repository.dart';
+import 'package:todoapp/modules/notes/home/bloc/home_controller.dart';
+import 'package:todoapp/modules/notes/home/bloc/home_state.dart';
+import 'package:todoapp/modules/notes/home/home_page.dart';
+import 'package:todoapp/modules/notes/repository/home_repository.dart';
 
 import 'home_controller_test.mocks.dart';
 
-@GenerateMocks([LoginRepository])
+@GenerateMocks([HomeRepository])
 void main() {
   HomeBloc? controller;
-  late final LoginRepository repository;
+  late final HomeRepository repository;
 
   group('Home bloc', () {
     final task = {
@@ -21,7 +20,7 @@ void main() {
       'value': false,
     };
     setUpAll(() {
-      repository = MockLoginRepository();
+      repository = MockHomeRepository();
       controller = HomeBloc(repository: repository);
     });
     test('should return initial state tasks empty', () {
@@ -55,20 +54,6 @@ void main() {
       expect(controller!.tasks.length, 11);
       expect(controller!.tasks.first, task);
       expect(controller!.tasks[5]['title'], 'Nova nova nota 4');
-    });
-
-    test('Should remove task with id 5', () {
-      when(repository.forgotPassword(user: 'user'))
-          .thenAnswer((_) => Future.value(true));
-
-      expect(controller!.tasks.any((element) => element['id'] == 5), true);
-      expect(controller!.tasks.length, 11);
-
-      controller!.removeTask(5);
-
-      expect(controller!.tasks.length, 10);
-      verify(repository.forgotPassword(user: 'user')).called(1);
-      expect(controller!.tasks.any((e) => e['id'] == 5), false);
     });
   });
 }

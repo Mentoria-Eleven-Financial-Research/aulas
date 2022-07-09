@@ -5,7 +5,7 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:todoapp/login/repositories/login_repository.dart' as _i2;
+import 'package:todoapp/modules/notes/repository/home_repository.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -17,21 +17,24 @@ import 'package:todoapp/login/repositories/login_repository.dart' as _i2;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-/// A class which mocks [LoginRepository].
+/// A class which mocks [HomeRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLoginRepository extends _i1.Mock implements _i2.LoginRepository {
-  MockLoginRepository() {
+class MockHomeRepository extends _i1.Mock implements _i2.HomeRepository {
+  MockHomeRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<bool> login({String? user, String? password}) =>
-      (super.noSuchMethod(
-          Invocation.method(#login, [], {#user: user, #password: password}),
+  _i3.Future<bool> createTask(Map<String, dynamic>? task) =>
+      (super.noSuchMethod(Invocation.method(#createTask, [task]),
           returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
   @override
-  _i3.Future<bool> forgotPassword({String? user}) =>
-      (super.noSuchMethod(Invocation.method(#forgotPassword, [], {#user: user}),
+  _i3.Future<bool> updateTask(Map<String, dynamic>? task) =>
+      (super.noSuchMethod(Invocation.method(#updateTask, [task]),
+          returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
+  @override
+  _i3.Future<bool> deleteTask(String? id) =>
+      (super.noSuchMethod(Invocation.method(#deleteTask, [id]),
           returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
 }
